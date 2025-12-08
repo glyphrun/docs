@@ -1,0 +1,306 @@
+# Input/Output Schemas
+
+Define what data your glyph accepts and returns.
+
+## Input Schema
+
+The input schema defines the form users fill out to run your glyph.
+
+### Schema Structure
+
+```typescript
+type InputSchema = {
+  name: string       // Field identifier (used in templates)
+  label: string      // Display label for users
+  type: FieldType    // Input type
+  required: boolean  // Is this field required?
+  description?: string   // Help text
+  placeholder?: string   // Placeholder text
+  default?: any      // Default value
+  options?: string[] // For select fields
+  min?: number       // For number fields
+  max?: number       // For number fields
+  pattern?: string   // Regex validation
+}[]
+```
+
+### Field Types
+
+#### text
+
+Single-line text input.
+
+```typescript
+{
+  name: 'walletAddress',
+  label: 'Wallet Address',
+  type: 'text',
+  required: true,
+  placeholder: '0x...',
+  pattern: '^0x[a-fA-F0-9]{40}$' // Ethereum address
+}
+```
+
+#### textarea
+
+Multi-line text input.
+
+```typescript
+{
+  name: 'sourceCode',
+  label: 'Smart Contract Code',
+  type: 'textarea',
+  required: true,
+  placeholder: 'Paste Solidity code here...'
+}
+```
+
+#### number
+
+Numeric input with optional range.
+
+```typescript
+{
+  name: 'amount',
+  label: 'Amount (USDC)',
+  type: 'number',
+  required: true,
+  min: 0.01,
+  max: 10000,
+  default: 100
+}
+```
+
+#### select
+
+Dropdown selection.
+
+```typescript
+{
+  name: 'network',
+  label: 'Network',
+  type: 'select',
+  required: true,
+  options: ['ethereum', 'base', 'polygon', 'arbitrum'],
+  default: 'base'
+}
+```
+
+#### checkbox
+
+Boolean toggle.
+
+```typescript
+{
+  name: 'includeMetadata',
+  label: 'Include Metadata',
+  type: 'checkbox',
+  required: false,
+  default: true
+}
+```
+
+#### url
+
+URL input with validation.
+
+```typescript
+{
+  name: 'apiEndpoint',
+  label: 'API Endpoint',
+  type: 'url',
+  required: true,
+  placeholder: 'https://api.example.com'
+}
+```
+
+#### file
+
+File upload (supported types vary).
+
+```typescript
+{
+  name: 'document',
+  label: 'Upload Document',
+  type: 'file',
+  required: false,
+  accept: '.pdf,.doc,.docx'
+}
+```
+
+## Output Schema
+
+Define the structure of your glyph's output.
+
+### Output Types
+
+```typescript
+type OutputSchema = {
+  type: 'markdown' | 'json' | 'text' | 'file'
+  schema?: JSONSchema  // For JSON type
+}
+```
+
+#### markdown
+
+Formatted text output (most common for prompts).
+
+```typescript
+{
+  type: 'markdown'
+}
+```
+
+#### json
+
+Structured data output.
+
+```typescript
+{
+  type: 'json',
+  schema: {
+    type: 'object',
+    properties: {
+      score: { type: 'number' },
+      issues: { type: 'array' },
+      recommendation: { type: 'string' }
+    }
+  }
+}
+```
+
+#### text
+
+Plain text output.
+
+```typescript
+{
+  type: 'text'
+}
+```
+
+## Validation
+
+### Built-in Validation
+
+Fields are validated automatically:
+
+- **Required** - Must have a value
+- **Type** - Must match field type
+- **Pattern** - Must match regex (if provided)
+- **Min/Max** - Must be within range
+
+### Custom Validation
+
+Add patterns for specific formats:
+
+```typescript
+// Ethereum address
+pattern: '^0x[a-fA-F0-9]{40}$'
+
+// Transaction hash
+pattern: '^0x[a-fA-F0-9]{64}$'
+
+// URL
+pattern: '^https?://.*'
+
+// Email
+pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'
+```
+
+## Examples
+
+### Smart Contract Analyzer
+
+```typescript
+const schema = {
+  inputs: [
+    {
+      name: 'contractAddress',
+      label: 'Contract Address',
+      type: 'text',
+      required: true,
+      pattern: '^0x[a-fA-F0-9]{40}$'
+    },
+    {
+      name: 'network',
+      label: 'Network',
+      type: 'select',
+      required: true,
+      options: ['ethereum', 'base', 'polygon']
+    },
+    {
+      name: 'depth',
+      label: 'Analysis Depth',
+      type: 'select',
+      required: true,
+      options: ['quick', 'standard', 'comprehensive'],
+      default: 'standard'
+    }
+  ],
+  outputs: {
+    type: 'markdown'
+  }
+}
+```
+
+### Price Feed Tool
+
+```typescript
+const schema = {
+  inputs: [
+    {
+      name: 'tokenSymbol',
+      label: 'Token Symbol',
+      type: 'text',
+      required: true,
+      placeholder: 'ETH, BTC, USDC...'
+    },
+    {
+      name: 'currency',
+      label: 'Currency',
+      type: 'select',
+      required: false,
+      options: ['USD', 'EUR', 'GBP'],
+      default: 'USD'
+    }
+  ],
+  outputs: {
+    type: 'json',
+    schema: {
+      type: 'object',
+      properties: {
+        price: { type: 'number' },
+        change24h: { type: 'number' },
+        volume: { type: 'number' }
+      }
+    }
+  }
+}
+```
+
+## Best Practices
+
+### Input Design
+
+- **Clear labels** - Users should understand immediately
+- **Helpful descriptions** - Explain what's expected
+- **Sensible defaults** - Reduce friction
+- **Appropriate types** - Use select for fixed options
+
+### Validation
+
+- **Required wisely** - Only require what's truly needed
+- **Validate formats** - Use patterns for addresses, hashes
+- **Show errors clearly** - Help users fix issues
+
+### Output
+
+- **Consistent format** - Same structure every run
+- **Useful metadata** - Include timestamps, versions
+- **Error details** - Clear error messages
+
+## Next Steps
+
+- [Pricing Your Glyph](/guides/creators/pricing-your-glyph)
+- [Publishing & Verification](/guides/creators/publishing-verification)

@@ -1,0 +1,269 @@
+# Creating a Tool Glyph
+
+This guide walks you through creating a Tool glyph that wraps external APIs.
+
+## What is a Tool Glyph?
+
+A Tool glyph acts as an API proxy, wrapping external services with payment handling and user-friendly inputs.
+
+## Prerequisites
+
+- Glyphrun account
+- API endpoint to wrap
+- API credentials (if required)
+
+## Step 1: Choose an API to Wrap
+
+Good candidates for Tool glyphs:
+
+- **Blockchain APIs** - Etherscan, Basescan, Alchemy
+- **Data APIs** - CoinGecko, DeFiLlama
+- **Social APIs** - Twitter, Farcaster
+- **AI APIs** - Replicate, Hugging Face
+
+## Step 2: Configure the Tool
+
+```typescript
+const toolConfig = {
+  apiEndpoint: 'https://api.example.com/v1/data',
+  apiMethod: 'GET', // or POST, PUT, DELETE
+  apiHeaders: {
+    'Content-Type': 'application/json'
+  },
+
+  // Authentication
+  authType: 'api_key', // 'none', 'api_key', 'bearer', 'basic'
+  authConfig: {
+    headerName: 'X-API-Key',
+    // Key is stored securely, not in config
+  },
+
+  // Optional transformations
+  requestTransform: null, // Jinja2 template
+  responseTransform: null, // JSONPath extraction
+
+  // Rate limiting
+  rateLimitPerMinute: 60
+}
+```
+
+### Authentication Types
+
+| Type | Description | Config |
+|------|-------------|--------|
+| `none` | No authentication | - |
+| `api_key` | API key in header | `headerName` |
+| `bearer` | Bearer token | - |
+| `basic` | Basic auth | `username`, `password` |
+
+## Step 3: Design Input Schema
+
+Map user inputs to API parameters:
+
+```typescript
+const inputSchema = [
+  {
+    name: 'contractAddress',
+    label: 'Contract Address',
+    type: 'text',
+    required: true,
+    description: 'Ethereum contract address to query'
+  },
+  {
+    name: 'action',
+    label: 'Action',
+    type: 'select',
+    required: true,
+    options: ['getABI', 'getSourceCode', 'getTransactions']
+  }
+]
+```
+
+## Step 4: Request Transformation
+
+Transform user inputs into API request:
+
+### URL Parameters
+
+```typescript
+// Input: { contractAddress: '0x...', action: 'getABI' }
+// API URL: https://api.etherscan.io/api?module=contract&action=getabi&address=0x...
+
+const requestTransform = `
+module=contract
+&action={{ action | lower }}
+&address={{ contractAddress }}
+`
+```
+
+### JSON Body
+
+```typescript
+const requestTransform = `
+{
+  "query": "{{ query }}",
+  "limit": {{ limit | default(10) }},
+  "filters": {{ filters | tojson }}
+}
+`
+```
+
+## Step 5: Response Transformation
+
+Extract relevant data from API response:
+
+```typescript
+// JSONPath extraction
+const responseTransform = '$.result.data'
+
+// Or complex transformation
+const responseTransform = `
+{
+  "address": $.result.contractAddress,
+  "verified": $.result.isVerified,
+  "sourceCode": $.result.SourceCode
+}
+`
+```
+
+## Step 6: Set Pricing
+
+Tools use custom pricing:
+
+```typescript
+const pricing = {
+  model: 'per-run',
+  amount: 0.02, // $0.02 per API call
+  currency: 'USDC'
+}
+```
+
+Factor in:
+- External API costs
+- Rate limit value
+- Data value
+
+## Step 7: Handle Errors
+
+Define error handling:
+
+```typescript
+// Common API errors to handle
+const errorMapping = {
+  401: 'API authentication failed',
+  429: 'Rate limit exceeded, try again later',
+  404: 'Resource not found',
+  500: 'External service error'
+}
+```
+
+## Example: Etherscan Contract Tool
+
+```typescript
+{
+  name: 'Contract Source Lookup',
+  slug: 'contract-source-lookup',
+  type: 'tool',
+  category: 'secure',
+
+  toolConfig: {
+    apiEndpoint: 'https://api.etherscan.io/api',
+    apiMethod: 'GET',
+    authType: 'api_key',
+    authConfig: {
+      paramName: 'apikey'
+    },
+    rateLimitPerMinute: 5
+  },
+
+  inputSchema: [
+    {
+      name: 'address',
+      label: 'Contract Address',
+      type: 'text',
+      required: true,
+      placeholder: '0x...'
+    },
+    {
+      name: 'network',
+      label: 'Network',
+      type: 'select',
+      required: true,
+      options: ['ethereum', 'base', 'polygon']
+    }
+  ],
+
+  requestTransform: `
+    module=contract
+    &action=getsourcecode
+    &address={{ address }}
+  `,
+
+  responseTransform: '$.result[0]',
+
+  pricing: {
+    model: 'per-run',
+    amount: 0.01,
+    currency: 'USDC'
+  }
+}
+```
+
+## Storing API Credentials
+
+API keys are stored securely:
+
+1. Go to Creator Dashboard
+2. Navigate to Secrets
+3. Add your API key
+4. Reference in tool config
+
+Keys are:
+- Encrypted at rest
+- Never exposed to users
+- Injected at runtime
+
+## Rate Limiting
+
+Configure rate limits:
+
+```typescript
+const rateLimitConfig = {
+  perMinute: 60,
+  perHour: 1000,
+  perDay: 10000
+}
+```
+
+When limits are hit:
+- Request is queued
+- User sees wait time
+- Or error if exceeded
+
+## Best Practices
+
+### API Selection
+
+- Choose reliable APIs
+- Check rate limits
+- Verify pricing/costs
+- Test availability
+
+### Input Design
+
+- Clear labels
+- Helpful descriptions
+- Sensible defaults
+- Input validation
+
+### Error Messages
+
+- User-friendly errors
+- Actionable guidance
+- Don't expose internals
+
+## Next Steps
+
+- [Input/Output Schemas](/guides/creators/input-output-schemas)
+- [Pricing Your Glyph](/guides/creators/pricing-your-glyph)
+- [Publishing & Verification](/guides/creators/publishing-verification)

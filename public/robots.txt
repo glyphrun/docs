@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://docs.glyphrun.com
+
+# Sitemaps
+Sitemap: https://docs.glyphrun.com/sitemap.xml

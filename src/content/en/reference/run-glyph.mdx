@@ -1,0 +1,222 @@
+# Run a Glyph
+
+Execute a glyph and receive the output.
+
+## Endpoint
+
+```
+POST /run
+```
+
+## Authentication
+
+Required. Bearer token in Authorization header.
+
+## Request
+
+### Headers
+
+```
+Authorization: Bearer YOUR_TOKEN
+Content-Type: application/json
+```
+
+### Body
+
+```json
+{
+  "glyphSlug": "token-name-generator",
+  "inputs": {
+    "theme": "DeFi",
+    "style": "Professional"
+  },
+  "modelId": "claude-3.5-sonnet"
+}
+```
+
+### Parameters
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `glyphSlug` | string | Yes | Glyph identifier (slug or ID) |
+| `inputs` | object | Yes | Input values matching glyph schema |
+| `modelId` | string | No | Model ID for prompts (uses default if omitted) |
+
+## Response
+
+### Success (200)
+
+```json
+{
+  "success": true,
+  "runId": "run_abc123",
+  "output": "## Token Name Suggestions\n\n1. **VaultYield** - Combines security...",
+  "cost": 0.05,
+  "duration": 3500,
+  "modelId": "claude-3.5-sonnet",
+  "usage": {
+    "prompt_tokens": 150,
+    "completion_tokens": 250,
+    "total_tokens": 400
+  }
+}
+```
+
+### Response Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `success` | boolean | Whether execution succeeded |
+| `runId` | string | Unique run identifier |
+| `output` | string | Glyph output (format varies by type) |
+| `cost` | number | Amount charged (USDC) |
+| `duration` | number | Execution time (ms) |
+| `modelId` | string | Model used (for prompts) |
+| `usage` | object | Token usage (for prompts) |
+
+## Error Responses
+
+### Insufficient Balance (402)
+
+```json
+{
+  "error": "Insufficient balance",
+  "required": 0.05,
+  "available": 0.02,
+  "runId": "run_abc123"
+}
+```
+
+### Glyph Not Found (404)
+
+```json
+{
+  "error": "Glyph not found: invalid-slug",
+  "runId": "run_abc123"
+}
+```
+
+### Invalid Input (400)
+
+```json
+{
+  "error": "Invalid input",
+  "details": {
+    "theme": "Required field missing"
+  },
+  "runId": "run_abc123"
+}
+```
+
+### Execution Error (500)
+
+```json
+{
+  "error": "Execution failed: LLM timeout",
+  "runId": "run_abc123"
+}
+```
+
+## Examples
+
+### Run a Prompt Glyph
+
+```bash
+curl -X POST https://api.glyphrun.com/run \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "glyphSlug": "smart-contract-analyzer",
+    "inputs": {
+      "contractAddress": "0x1234567890abcdef1234567890abcdef12345678",
+      "network": "base",
+      "depth": "detailed"
+    },
+    "modelId": "gpt-4o"
+  }'
+```
+
+### Run an Agent Glyph
+
+```bash
+curl -X POST https://api.glyphrun.com/run \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "glyphSlug": "wallet-monitor",
+    "inputs": {
+      "walletAddress": "0x1234...",
+      "alertThreshold": 1000
+    }
+  }'
+```
+
+### Run a Tool Glyph
+
+```bash
+curl -X POST https://api.glyphrun.com/run \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "glyphSlug": "contract-source-lookup",
+    "inputs": {
+      "address": "0x1234...",
+      "network": "ethereum"
+    }
+  }'
+```
+
+## Code Examples
+
+### JavaScript
+
+```javascript
+const response = await fetch('https://api.glyphrun.com/run', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    glyphSlug: 'token-name-generator',
+    inputs: {
+      theme: 'DeFi',
+      style: 'Professional'
+    }
+  })
+})
+
+const result = await response.json()
+console.log(result.output)
+```
+
+### Python
+
+```python
+import requests
+
+response = requests.post(
+    'https://api.glyphrun.com/run',
+    headers={
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/json'
+    },
+    json={
+        'glyphSlug': 'token-name-generator',
+        'inputs': {
+            'theme': 'DeFi',
+            'style': 'Professional'
+        }
+    }
+)
+
+result = response.json()
+print(result['output'])
+```
+
+## Notes
+
+- Failed runs are not charged
+- Runs are logged in your history
+- Cost is deducted from available balance
+- Long-running agents may take up to 180 seconds

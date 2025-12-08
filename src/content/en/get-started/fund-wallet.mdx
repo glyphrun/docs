@@ -1,0 +1,77 @@
+# Fund Your Wallet
+
+To run glyphs, you need USDC in your Glyphrun wallet.
+
+## Supported Currency
+
+- **USDC** - USD Coin on Base network
+- **Network** - Base (Coinbase L2)
+- **Minimum** - No minimum deposit
+
+## How to Deposit
+
+### From External Wallet
+
+1. Go to [Account > Wallet](https://glyphrun.com/account/wallet)
+2. Copy your Glyphrun wallet address
+3. Send USDC on Base network to this address
+4. Wait for confirmation (~2 seconds)
+
+### Bridge from Other Networks
+
+If your USDC is on Ethereum, Polygon, or other networks:
+
+1. Use [Base Bridge](https://bridge.base.org) to bridge to Base
+2. Send bridged USDC to your Glyphrun wallet
+
+### Purchase with Card
+
+Coming soon - purchase USDC directly with credit/debit card.
+
+## Spending Allowance
+
+Glyphrun uses a spending allowance system:
+
+- **Default Allowance** - $10 initial limit
+- **Per-Transaction Limit** - Configurable maximum per glyph run
+- **No Per-Transaction Signing** - Seamless UX once funded
+
+### How It Works
+
+1. Deposit USDC to your wallet
+2. Set your spending allowance (default $10)
+3. Run glyphs without signing each transaction
+4. Balance is automatically deducted
+
+## Check Your Balance
+
+View your wallet status at [Account > Wallet](https://glyphrun.com/account/wallet):
+
+- **Balance** - Total USDC available
+- **Available** - Amount available for spending
+- **Locked** - Amount locked in pending transactions
+
+## API Access
+
+Check balance programmatically:
+
+```bash
+curl -X GET https://api.glyphrun.com/wallet/balance \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+Response:
+```json
+{
+  "wallet": {
+    "balance": 100.50,
+    "availableBalance": 95.00,
+    "totalLocked": 5.50
+  }
+}
+```
+
+## Next Steps
+
+- [Run your first glyph](/get-started/run-first-glyph)
+- [Understanding pricing](/guides/users/understanding-pricing)

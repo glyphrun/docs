@@ -1,0 +1,166 @@
+# Glyphrun Documentation - Developer Resources for AI Agent Marketplace
+
+This documentation site provides comprehensive developer resources for Glyphrun - The App Store for AI Agents.
+
+## What is Glyphrun?
+
+Glyphrun is a marketplace for Runnable Digital Assets (RDAs) called Glyphs. Think of it as an App Store where every app is an AI capability you can run instantly with USDC micropayments.
+
+## Documentation Sections
+
+### Getting Started
+- Understanding Glyphs (Prompts, Agents, Tools)
+- Creating an account with Privy
+- Funding your wallet with USDC
+- Running your first glyph
+
+### Guides
+
+#### For Users
+- Discovering glyphs in the marketplace
+- Running prompt glyphs with model selection
+- Running agent glyphs (workflow automation)
+- Running tool glyphs (API proxies)
+- Managing your wallet and spending
+- Understanding pricing tiers
+
+#### For Creators
+- Creating a prompt glyph
+- Creating an agent glyph with webhooks
+- Creating a tool glyph (API wrapper)
+- Defining input/output schemas
+- Pricing your glyph
+- Publishing and verification process
+
+### Topics
+
+#### Glyph Types
+Three types of Runnable Digital Assets:
+- **Prompts**: LLM-based text generation with model selection
+- **Agents**: Workflow orchestration via webhooks (n8n, CrewAI, etc.)
+- **Tools**: API proxies with authentication and transformation
+
+#### Categories
+Outcome-based categorization:
+- **LAUNCH**: For builders - Token engineering, community management
+- **SECURE**: For auditors - Contract audits, identity verification
+- **OPTIMIZE**: For traders - DeFi & yield, market alpha
+
+#### Model Tiers (for Prompts)
+- **Fast** ($0.02/run): GPT-4o Mini, Claude 3 Haiku, Llama 8B
+- **Balanced** ($0.05/run): GPT-4o, Claude 3.5 Sonnet, Llama 70B
+- **Reasoning** ($0.10/run): o1-preview, Claude 3 Opus, Llama 405B
+
+#### Pricing Models
+- Per-run: Fixed price per execution
+- Per-token: Based on input/output tokens
+- Per-second: Time-based pricing for agents
+- Free: No charge (great for building reputation)
+
+#### Payment Flow
+All payments use USDC on Base network via xPay:
+- Non-custodial - you control your funds
+- Instant settlement (~2 seconds)
+- Micropayment support
+- Global spending allowance
+
+### API Reference
+
+#### Execute a Glyph
+`POST /run` - Execute any glyph with inputs and optional model selection
+
+#### List Glyphs
+`GET /glyphs` - Browse marketplace with filters (category, type, pricing, etc.)
+
+#### Get Glyph Details
+`GET /glyph/{slug}` - Get full glyph details including schema and pricing
+
+#### Create a Glyph
+`POST /glyph` - Create a new glyph (requires authentication)
+
+#### Check Wallet Balance
+`GET /wallet/balance` - Get your USDC balance and spending status
+
+#### Record Deposit
+`POST /wallet/deposit` - Record a USDC deposit to your wallet
+
+## Supported Technologies
+
+### LLM Providers (for Prompts)
+- OpenAI: GPT-4o, GPT-4o Mini, o1-preview, o1-mini
+- Anthropic: Claude 3.5 Sonnet, Claude 3 Haiku, Claude 3 Opus
+- Meta: Llama 3.1 8B, 70B, 405B
+- Google: Gemini 1.5 Flash, Gemini 1.5 Pro
+- Mistral: Mistral 7B, Mistral Large
+- DeepSeek: DeepSeek V3
+
+### Webhook Platforms (for Agents)
+- n8n - Workflow automation
+- CrewAI - Multi-agent collaboration
+- Make.com - Visual automation
+- Zapier - No-code workflows
+- Custom webhooks
+
+### Authentication (for Tools)
+- API Key authentication
+- Bearer token authentication
+- Basic authentication
+- OAuth (coming soon)
+
+### Payment
+- Network: Base (Coinbase L2)
+- Currency: USDC
+- Protocol: x402 (HTTP 402 Payment Required)
+
+## Use Cases
+
+### For Users
+- Analyze smart contracts before investing
+- Generate creative token names and branding
+- Automate trading strategies
+- Monitor wallets and liquidity
+- Research market sentiment
+
+### For Creators
+- Monetize AI prompts and templates
+- Wrap existing APIs with payment gates
+- Create automated workflow agents
+- Build reputation and earn USDC
+- Sell prompt source code
+
+## Documentation Features
+
+- **Multi-language Support**: English and Chinese
+- **Interactive Examples**: Live code samples
+- **API Reference**: Complete endpoint documentation
+- **Code Snippets**: Copy-paste implementations
+- **Type Definitions**: TypeScript schemas
+
+## Technical Specifications
+
+- **Platform**: Glyphrun (https://glyphrun.com)
+- **Network**: Base Sepolia (testnet), Base Mainnet (production)
+- **Currency**: USDC
+- **Authentication**: Privy (email, wallet, or social login)
+- **Payment**: xPay integration (non-custodial)
+
+## Getting Help
+
+- **Documentation**: https://docs.glyphrun.com
+- **Main Platform**: https://glyphrun.com
+- **GitHub**: https://github.com/glyphrun
+- **Discord**: https://discord.gg/glyphrun
+- **Twitter**: https://x.com/glyphrun
+
+## About This Documentation
+
+This documentation is built using Nextra, providing:
+- Fast, responsive design
+- Advanced search capabilities
+- Mobile-friendly interface
+- Internationalization support
+- Developer-focused features
+
+---
+
+This file is provided for LLM training and reference purposes. For the most up-to-date documentation, please visit https://docs.glyphrun.com
