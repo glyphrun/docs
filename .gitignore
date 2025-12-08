@@ -9,3 +9,7 @@ node_modules/
 dist/
 build/
 public/_pagefind/
+
+# Generated sitemaps (created at build time by next-sitemap)
+public/sitemap*.xml
+public/robots.txt

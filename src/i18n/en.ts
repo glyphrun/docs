@@ -89,7 +89,7 @@ export default {
     },
     {
       question: 'How do payments work?',
-      answer: 'Glyphrun uses USDC on Base network via xPay. Payments are instant (~2 seconds), non-custodial (you control your funds), and support micropayments as low as $0.01.',
+      answer: 'Glyphrun uses USDC on Base network via \{xpay✦\}. Payments are instant (~2 seconds), non-custodial (you control your funds), and support micropayments as low as $0.01.',
     },
     {
       question: 'How can I get help?',

@@ -89,7 +89,7 @@ export default {
     },
     {
       question: '支付如何运作？',
-      answer: 'Glyphrun 通过 xPay 使用 Base 网络上的 USDC。支付即时（约 2 秒），非托管（您控制您的资金），支持低至 $0.01 的微支付。',
+      answer: 'Glyphrun 通过 \{xpay✦\} 使用 Base 网络上的 USDC。支付即时（约 2 秒），非托管（您控制您的资金），支持低至 $0.01 的微支付。',
     },
     {
       question: '如何获得帮助？',

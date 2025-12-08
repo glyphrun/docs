@@ -2,46 +2,38 @@ import type { Article, Organization, SoftwareApplication, WebSite } from 'schema
 
 export const organizationSchema: Organization = {
   '@type': 'Organization',
-  '@id': 'https://docs.xpay.sh/#organization',
-  name: 'Xpay',
-  alternateName: '{xpay✦}',
-  url: 'https://www.xpay.sh',
-  logo: 'https://www.xpay.sh/logo/logo-full.png',
+  '@id': 'https://docs.glyphrun.com/#organization',
+  name: 'Glyphrun',
+  url: 'https://glyphrun.com',
+  logo: 'https://glyphrun.com/logo-full.png',
   sameAs: [
-    'https://github.com/xpaysh',
-    'https://twitter.com/xpaysh',
-    'https://discord.gg/vukXDGT7n5'
+    'https://github.com/glyphrun',
+    'https://twitter.com/glyphrun',
+    'https://discord.gg/glyphrun'
   ],
-  description: 'AI Agent Payment Control Platform - agentic payments infrastructure for autonomous payments',
+  description: 'The App Store for AI Agents - A marketplace for Runnable Digital Assets (RDAs) called Glyphs',
   foundingDate: '2024',
-  legalName: 'xPay',
-  numberOfEmployees: {
-    '@type': 'QuantitativeValue',
-    value: '1-10',
-    unitText: 'individuals'
-  },
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'Customer Service',
-    email: 'support@xpay.sh',
-    url: 'https://discord.gg/vukXDGT7n5'
+    url: 'https://discord.gg/glyphrun'
   }
 }
 
 export const websiteSchema: WebSite = {
   '@type': 'WebSite',
-  '@id': 'https://docs.xpay.sh/#website',
-  url: 'https://docs.xpay.sh',
-  name: '{xpay✦} Documentation',
-  description: 'World-class developer documentation for the x402 protocol and {xpay✦} products',
+  '@id': 'https://docs.glyphrun.com/#website',
+  url: 'https://docs.glyphrun.com',
+  name: 'Glyphrun Documentation',
+  description: 'Developer documentation for Glyphrun - The App Store for AI Agents',
   publisher: {
-    '@id': 'https://docs.xpay.sh/#organization'
+    '@id': 'https://docs.glyphrun.com/#organization'
   },
   potentialAction: {
     '@type': 'SearchAction',
     target: {
       '@type': 'EntryPoint',
-      urlTemplate: 'https://docs.xpay.sh/search?q={search_term_string}'
+      urlTemplate: 'https://docs.glyphrun.com/search?q={search_term_string}'
     },
     query: 'required name=search_term_string'
   }
@@ -49,29 +41,28 @@ export const websiteSchema: WebSite = {
 
 export const softwareApplicationSchema: SoftwareApplication = {
   '@type': 'SoftwareApplication',
-  '@id': 'https://docs.xpay.sh/#software',
-  name: '{xpay✦} Platform',
-  alternateName: '{xpay✦}',
-  description: 'Comprehensive platform for AI agent payment control, API monetization, and transaction monitoring',
-  url: 'https://www.xpay.sh',
-  applicationCategory: 'FinanceApplication',
+  '@id': 'https://docs.glyphrun.com/#software',
+  name: 'Glyphrun',
+  description: 'Marketplace for AI agent capabilities - Run, create, and monetize Prompts, Agents, and Tools with USDC micropayments',
+  url: 'https://glyphrun.com',
+  applicationCategory: 'DeveloperApplication',
   operatingSystem: 'Web Browser',
   offers: {
     '@type': 'Offer',
     price: '0',
     priceCurrency: 'USD',
-    description: 'Free tier available'
+    description: 'Pay-per-use pricing starting at $0.02'
   },
   creator: {
-    '@id': 'https://docs.xpay.sh/#organization'
+    '@id': 'https://docs.glyphrun.com/#organization'
   },
   featureList: [
-    'Smart Proxy - AI spending control',
-    'Paywall Service - API monetization',
-    'Transaction Explorer - Payment monitoring',
-    'x402 Protocol Integration',
-    'Multi-chain support',
-    'Real-time analytics'
+    'Prompts - LLM-based text generation with model selection',
+    'Agents - Workflow orchestration via webhooks',
+    'Tools - API proxies with authentication',
+    'USDC micropayments on Base',
+    'Non-custodial wallet integration',
+    'Creator monetization'
   ]
 }
 
@@ -97,30 +88,33 @@ export function createTechArticleSchema({
     description,
     url,
     author: {
-      '@id': 'https://docs.xpay.sh/#organization'
+      '@id': 'https://docs.glyphrun.com/#organization'
     },
     publisher: {
-      '@id': 'https://docs.xpay.sh/#organization'
+      '@id': 'https://docs.glyphrun.com/#organization'
     },
     datePublished: publishedDate || new Date().toISOString(),
     dateModified: modifiedDate || new Date().toISOString(),
     isPartOf: {
       '@type': 'WebSite',
-      '@id': 'https://docs.xpay.sh/#website'
+      '@id': 'https://docs.glyphrun.com/#website'
     },
     about: {
       '@type': 'Thing',
-      name: section || 'x402 Protocol Documentation'
+      name: section || 'Glyphrun Documentation'
     },
     genre: ['Technical Documentation', 'API Documentation', 'Developer Guide'],
     keywords: [
-      'x402 protocol',
+      'glyphrun',
       'AI agents',
-      'autonomous payments',
-      'API monetization',
-      'blockchain payments',
-      'smart proxy',
-      'transaction monitoring'
+      'prompts',
+      'agents',
+      'tools',
+      'USDC payments',
+      'micropayments',
+      'Base network',
+      'RDA',
+      'runnable digital assets'
     ]
   }
 }
