@@ -18,9 +18,10 @@ export const config = {
      * - logo (logo files)
      * - img (image files)
      * - *.xml (XML files like sitemap.xml, RSS feeds, etc.)
+     * - *.json (JSON files like manifest.json)
      * - robots.txt (robots file)
      * - llms.txt (LLM training file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|favicon|logo|img|_pagefind|.*\\.xml|robots.txt|llms.txt).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|favicon|logo|img|_pagefind|.*\\.xml|.*\\.json|robots.txt|llms.txt).*)',
   ],
 }

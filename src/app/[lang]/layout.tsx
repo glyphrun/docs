@@ -9,7 +9,7 @@ import { Banner, Head, Search } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import { CustomFooter } from '@/components/CustomFooter'
 import { useServerLocale } from '@/hooks'
-import LocaleToggle from '@/widgets/locale-toggle'
+// LocaleToggle removed - keeping i18n structure for future use
 import ThemeToggle from '@/widgets/theme-toggle'
 import { Analytics } from "@vercel/analytics/react";
 
@@ -114,11 +114,7 @@ const CustomNavbar = async ({ lang }: I18nLangAsyncProps) => {
       projectLink={repo}
       chatLink="https://discord.gg/glyphrun"
     >
-      <>
-        <LocaleToggle className="max-md:hidden" />
-        <ThemeToggle className="max-md:hidden" />
-      </>
-
+      <ThemeToggle className="max-md:hidden" />
     </Navbar>
   )
 }
@@ -200,7 +196,7 @@ export default async function RootLayout({ children, params }: LayoutProps<'/[la
             )}
             i18n={[
               { locale: 'en', name: 'English' },
-              { locale: 'zh', name: '简体中文' },
+              // { locale: 'zh', name: '简体中文' }, // Hidden for now - keeping i18n structure for future
             ]}
             toc={{
               backToTop: t('backToTop'),
